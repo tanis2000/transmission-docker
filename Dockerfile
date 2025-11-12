@@ -9,7 +9,6 @@ RUN apk --no-cache add \
 
 WORKDIR /app
 RUN git clone -b 4.0.5 --recurse-submodules --depth 1 https://github.com/transmission/transmission.git src
-RUN ls -la
 
 RUN cmake \
             -S src \
@@ -38,6 +37,10 @@ RUN git clone --depth 1 https://github.com/ronggang/transmission-web-control.git
 
 FROM alpine:latest AS runtime
 
+ARG BUILD_VERSION
+LABEL org.opencontainers.image.authors="santinelli@gmail.com"
+LABEL version="${BUILD_VERSION}"
+
 RUN apk --no-cache add \
     ca-certificates libevent openssl zlib libpsl curl libnatpmp brotli crc32c libdeflate libintl libstdc++ libgcc
 WORKDIR /transmission
@@ -55,5 +58,7 @@ COPY --from=build /app/webcontrol/src /transmission/public_html
 #RUN cp /transmission/public_html/index.html /transmission/webcontrol/index.original.html
 
 ENV TRANSMISSION_WEB_HOME=/transmission/public_html
+
+EXPOSE 9091 51413/tcp 51413/udp
 
 ENTRYPOINT [ "/bin/transmission-daemon", "--foreground", "--config-dir", "/transmission/config" ]
