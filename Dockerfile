@@ -39,7 +39,7 @@ RUN git clone --depth 1 https://github.com/ronggang/transmission-web-control.git
 FROM alpine:latest AS runtime
 
 RUN apk --no-cache add \
-    ca-certificates libevent openssl zlib libpsl curl libnatpmp brotli crc32c libdeflate libintl
+    ca-certificates libevent openssl zlib libpsl curl libnatpmp brotli crc32c libdeflate libintl libstdc++ libgcc
 WORKDIR /transmission
 RUN mkdir /transmission/config
 RUN chmod -R 1777 /transmission
