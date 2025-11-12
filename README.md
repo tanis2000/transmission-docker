@@ -5,7 +5,7 @@ Running the image
 ```sh
 docker run -d \
   --name=transmission \
-  -p 45556:45556 \
+  -p 51413:51413 \
   -p 9091:9091 \
   -v /data/transmission:/transmission/config \
   -v /data/transmission/incomplete:/incomplete \
